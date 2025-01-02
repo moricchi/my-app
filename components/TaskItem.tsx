@@ -13,7 +13,7 @@ interface Task {
   text: string
   completed: boolean
   priority: 'low' | 'medium' | 'high'
-  category: string
+  category: 'work' | 'personal' | 'shopping' | 'other'
   dueDate: string
 }
 
