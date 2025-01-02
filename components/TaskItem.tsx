@@ -58,7 +58,7 @@ export function TaskItem({ task, onToggle, onDelete, onUpdate }: TaskItemProps) 
         </Select>
         <Select
           value={editedTask.category}
-          onValueChange={(value) => setEditedTask({ ...editedTask, category: value })}
+          onValueChange={(value) => setEditedTask({ ...editedTask, category: value as 'work' | 'personal' | 'shopping' | 'other' })}
         >
           <SelectTrigger className="w-[120px]">
             <SelectValue placeholder="カテゴリ" />
