@@ -72,7 +72,7 @@ export default function TaskApp() {
       <Card className="w-full max-w-md bg-white/80 dark:bg-gray-800/80 backdrop-blur-lg">
         <CardContent className="p-6">
           <div className="flex justify-between items-center mb-6">
-            <h1 className="text-2xl font-bold text-gray-800 dark:text-white">タスク管理！！！</h1>
+            <h1 className="text-2xl font-bold text-gray-800 dark:text-white">タスク管理アプリ</h1>
             <Button variant="ghost" size="icon" onClick={() => setIsDarkMode(!isDarkMode)}>
               {isDarkMode ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
             </Button>
