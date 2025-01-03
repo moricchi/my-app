@@ -7,15 +7,9 @@ import { Calendar } from '@/components/ui/calendar'
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
 import { format } from 'date-fns'
 import { CalendarIcon } from 'lucide-react'
+import { Task } from '../app/types';
 
-interface Task {
-  id: number
-  text: string
-  completed: boolean
-  priority: 'low' | 'medium' | 'high'
-  category: string
-  dueDate: string
-}
+
 
 interface TaskItemProps {
   task: Task
