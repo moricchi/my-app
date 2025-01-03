@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Card, CardContent } from '@/components/ui/card'
 import { TaskItem } from '@/components/TaskItem'
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 
 interface Task {
   id: number
@@ -72,7 +73,13 @@ export default function TaskApp() {
       <Card className="w-full max-w-md bg-white/80 dark:bg-gray-800/80 backdrop-blur-lg">
         <CardContent className="p-6">
           <div className="flex justify-between items-center mb-6">
-            <h1 className="text-2xl font-bold text-gray-800 dark:text-white">タスク管理アプリ!</h1>
+            <div className="flex items-center gap-2">
+              <Avatar>
+                <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
+                <AvatarFallback>CN</AvatarFallback>
+              </Avatar>
+              <h1 className="text-2xl font-bold text-gray-800 dark:text-white">タスク管理アプリ!</h1>
+            </div>
             <Button variant="ghost" size="icon" onClick={() => setIsDarkMode(!isDarkMode)}>
               {isDarkMode ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
             </Button>
