@@ -30,42 +30,91 @@ export default function TaskApp() {
     }
   }, [isDarkMode])
 
-  const addTask = () => {
+  useEffect(() => {
+    const fetchTasks = async () => {
+      const response = await fetch('/api/tasks');
+      const data = await response.json();
+      setTasks(data);
+    };
+
+    fetchTasks();
+  }, []);
+
+  const addTask = async () => {
     if (newTask.trim() !== '') {
-      setTasks([...tasks, {
-        id: Date.now(),
-        text: newTask,
-        completed: false,
-        priority: 'medium',
-        category: 'work', // デフォルトカテゴリを'work'に設定
-        dueDate: '' // デフォルトでは期限なし
-      }])
-      setNewTask('')
+      const response = await fetch('/api/tasks', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          text: newTask,
+          completed: false,
+          priority: 'medium',
+          category: 'work',
+          dueDate: '',
+        }),
+      });
+
+      if (response.ok) {
+        const newTaskData = await response.json();
+        setTasks([...tasks, newTaskData]);
+        setNewTask('');
+      }
+    }
+  };
+
+  const toggleTask = async (id: number) => {
+    const taskToToggle = tasks.find(task => task.id === id);
+    if (taskToToggle) {
+      const updatedTask = { ...taskToToggle, completed: !taskToToggle.completed };
+      const response = await fetch(`/api/tasks`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(updatedTask),
+      });
+
+      if (response.ok) {
+        setTasks(tasks.map(task => (task.id === id ? updatedTask : task)));
+      }
     }
   }
 
-  const toggleTask = (id: number) => {
-    setTasks(tasks.map(task =>
-      task.id === id ? { ...task, completed: !task.completed } : task
-    ))
-  }
+  const deleteTask = async (id: number) => {
+    try {
+      const response = await fetch(`/api/tasks`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ id }),
+      });
 
-  const deleteTask = (id: number) => {
-    setTasks(tasks.filter(task => task.id !== id))
-  }
-
-  const updateTask = (id: number, updates: Partial<Task>) => {
-    setTasks(tasks.map(task => {
-      if (task.id === id) {
-        const updatedTask = { ...task, ...updates };
-        // Ensure dueDate is a valid date string
-        if (updatedTask.dueDate && isNaN(new Date(updatedTask.dueDate).getTime())) {
-          updatedTask.dueDate = new Date().toISOString().split('T')[0];
-        }
-        return updatedTask;
+      if (response.ok) {
+        const data = await response.json();
+        setTasks(data.tasks);
+      } else {
+        console.error('Failed to delete task:', response.statusText);
       }
-      return task;
-    }))
+    } catch (error) {
+      console.error('Error deleting task:', error);
+    }
+  }
+
+  const updateTask = async (id: number, updates: Partial<Task>) => {
+    const response = await fetch(`/api/tasks`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ id, ...updates }),
+    });
+
+    if (response.ok) {
+      setTasks(tasks.map(task => (task.id === id ? { ...task, ...updates } : task)));
+    }
   }
 
   return (

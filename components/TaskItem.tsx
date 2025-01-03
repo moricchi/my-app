@@ -13,7 +13,7 @@ interface Task {
   text: string
   completed: boolean
   priority: 'low' | 'medium' | 'high'
-  category: 'work' | 'personal' | 'shopping' | 'other'
+  category: string
   dueDate: string
 }
 
@@ -58,7 +58,7 @@ export function TaskItem({ task, onToggle, onDelete, onUpdate }: TaskItemProps) 
         </Select>
         <Select
           value={editedTask.category}
-          onValueChange={(value) => setEditedTask({ ...editedTask, category: value as 'work' | 'personal' | 'shopping' | 'other' })}
+          onValueChange={(value) => setEditedTask({ ...editedTask, category: value })}
         >
           <SelectTrigger className="w-[120px]">
             <SelectValue placeholder="カテゴリ" />
